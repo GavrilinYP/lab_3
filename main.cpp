@@ -38,22 +38,30 @@ main() {
          T_Kel = Temp.temp;
         switch (Temp.scale){
         case 'C':
+        case 'c':
             T_Kel+=273;
             break;
         case 'F':
+        case 'f':
              T_Kel=((5.0/9)*(T_Kel-32)+273);
             break;
         }
         switch (scale_to){
         case 'C':
+        case 'c':
             T_Kel-=273;
             break;
         case 'F':
+        case 'f':
             T_Kel=((9.0/5)*(T_Kel - 273)+32);
             break;
         }
         return T_Kel;
     }
+     bool operator< (const Temperature& lhs, const Temperature& rhs)
+     {
+         return convert(lhs,'K')<convert(rhs, 'K');
+     }
     size_t count;
    char el, probel, otstup;
    int proverka;
