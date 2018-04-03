@@ -52,6 +52,7 @@ main() {
             T_Kel=((9.0/5)*(T_Kel - 273)+32);
             break;
         }
+        return T_Kel;
     }
     size_t count;
    char el, probel, otstup;
