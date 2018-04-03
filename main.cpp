@@ -1,4 +1,5 @@
 #include <iostream>
+#include "Temperature.h"
 #include <sstream>
 #include <vector>
 #include <cassert>
@@ -9,7 +10,6 @@ struct Temperature{
     char scale;
     double temp;
 };
-istream & operator >> (istream &in, Temperature &Temp);
 istream & operator >> (istream &in, Temperature &Temp){
     in >> Temp.temp;
     in >> Temp.scale;}
@@ -28,57 +28,76 @@ void test_temperature_input(){
     assert(Temp.temp == -400);
     assert(Temp.scale == 'F');
 }
+double convert (const Temperature &Temp, char scale_to) {
+    double T_Kel;
+    T_Kel = Temp.temp;
+    switch (Temp.scale){
+    case 'C':
+    case 'c':
+        T_Kel+=273;
+        break;
+    case 'F':
+    case 'f':
+        T_Kel=((5.0/9)*(T_Kel-32)+273);
+        break;
+    }
+    switch (scale_to){
+    case 'C':
+    case 'c':
+        T_Kel-=273;
+        break;
+    case 'F':
+    case 'f':
+        T_Kel=((9.0/5)*(T_Kel - 273)+32);
+        break;
+    }
+    return T_Kel;
+}
+bool operator< (const Temperature& lhs, const Temperature& rhs)
+{
+    return convert(lhs,'K')<convert(rhs, 'K');
+}
+bool operator> (const Temperature& lhs, const Temperature& rhs)
+{
+    return convert(lhs,'K')>convert(rhs, 'K');
+}
+Temperature operator- (const Temperature& lhs, const Temperature& rhs)
+{
+    Temperature ret_temp;
+    ret_temp.temp=convert(lhs,'K')-convert(rhs, 'K');
+    ret_temp.scale='K';
+    return  ret_temp;
+}
+Temperature operator/ (const Temperature& lhs, const Temperature& rhs)
+{
+    Temperature ret_temp;
+    ret_temp.temp=convert(lhs,'K')/convert(rhs, 'K');
+    ret_temp.scale='K';
+    return  ret_temp;
+}
 
 
 int
 main() {
     test_temperature_input();
-    double convert (const Temperature &Temp, char scale_to){
-        double T_Kel;
-         T_Kel = Temp.temp;
-        switch (Temp.scale){
-        case 'C':
-        case 'c':
-            T_Kel+=273;
-            break;
-        case 'F':
-        case 'f':
-             T_Kel=((5.0/9)*(T_Kel-32)+273);
-            break;
-        }
-        switch (scale_to){
-        case 'C':
-        case 'c':
-            T_Kel-=273;
-            break;
-        case 'F':
-        case 'f':
-            T_Kel=((9.0/5)*(T_Kel - 273)+32);
-            break;
-        }
-        return T_Kel;
-    }
-     bool operator< (const Temperature& lhs, const Temperature& rhs)
-     {
-         return convert(lhs,'K')<convert(rhs, 'K');
-     }
     size_t count;
    char el, probel, otstup;
    int proverka;
     double kof;
     cout<<"\n chislo el ";
     cin >> count;
-    vector<double> xs(count);
+    vector<Temperature> xs(count);
+    vector<double> xsk (count);
     cout<<"\n vvedite  "<<count<<" elementov ";
     for (size_t i = 0; i < count; i++) {
         cin >> xs[i];
-
+        xsk[i]=convert(xs[i],'K');
     }
     size_t bin_count;
     cout<<"\n chislo korzin ";
     cin >> bin_count;
-    double min = xs[0], max = xs[0];
-    for (double x:xs) {
+    double min = xsk[0], max = xsk[0];
+    for ( double x:xsk) {
         if (x < min) {
             min = x;
         }
@@ -87,7 +106,7 @@ main() {
         }
     }
     vector<size_t> bins(bin_count, 0);
-    for (double x:xs) {
+    for (double x:xsk) {
         size_t index = (x - min) / (max - min) * bin_count;
         if (x == max) {
             index--;
