@@ -2,9 +2,21 @@
 using  namespace std;
 
 char Scale[]="CKF";
-istream & operator >> (istream &in, Temperature &Temp){
+int k=0;
+double Con;
+istream & operator >> (istream &in, Temperature &Temp) {
+    in.setstate(ios_base::goodbit);
     in >> Temp.temp;
-    in >> Temp.scale;}
+    in >> Temp.scale;
+    if (Temp.scale != 'C' && Temp.scale != 'K' && Temp.scale != 'F' && Temp.scale !=
+                'c' && Temp.scale != 'f' && Temp.scale != 'k')
+        k = 1;
+    Con=convert(Temp,'K');
+        if (Con < 0)
+            k = 2;
+    if (k > 0)
+        in.setstate(ios_base::failbit);
+}
 
 double convert (const Temperature &Temp, char scale_to) {
     double T_Kel;

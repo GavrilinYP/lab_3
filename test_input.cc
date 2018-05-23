@@ -18,8 +18,8 @@ int main (){
     iss3>>Temp;
     assert(Temp.temp == -400);
     assert(Temp.scale == 'F');
-    istringstream iss2("0K");
+    istringstream iss4("0K");
     iss4>>Temp;
-    assert(Temp.temp > 0);
+    assert(Temp.temp >= 0);
     assert(Temp.scale == 'K');
 }

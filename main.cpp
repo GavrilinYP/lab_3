@@ -7,8 +7,8 @@ using namespace std;
 
 int main() {
     size_t count;
-   char el, probel, otstup;
-   int proverka;
+    char el, probel, otstup;
+    int proverka;
     double kof;
     cout<<"\n chislo el ";
     cin >> count;
@@ -17,7 +17,9 @@ int main() {
     cout<<"\n vvedite  "<<count<<" elementov ";
     for (size_t i = 0; i < count; i++) {
         cin >> xs[i];
+        if (cin.fail() ){return -1;}
         xsk[i]=convert(xs[i],'K');
+
     }
     size_t bin_count;
     cout<<"\n chislo korzin ";
@@ -40,8 +42,9 @@ int main() {
         bins[index]++;
     }
     kof=1;
-    if (max>76)
-        kof=(1-(max-76)/max);
+    if (max>(352)){
+        kof=(1-(max-352)/max);}
+    cout<<kof<<" \n";
     cout<<"vibirite_simvol_dlya_elementa";
     cin>>el;
     proverka=el;
@@ -53,10 +56,10 @@ int main() {
         proverka=probel;
         if (proverka==13||proverka==9)
             cout<<"ERROR";
-        else{
-            cout<<"vibirite_simvol_dlya_otstupa";
-            cin>>otstup;
-            proverka=otstup;
+        else {
+            cout << "vibirite_simvol_dlya_otstupa";
+            cin >> otstup;
+            proverka = otstup;
 
             if (proverka==13||proverka==9)
                 cout<<"ERROR";
@@ -71,10 +74,12 @@ int main() {
                         else
                             cout << "\n" << otstup << otstup << bins[i] * 100 / count << "%"
                                     << probel;
-                        for (size_t k = 0; k < bins[i]*kof; k++)
+                        for (size_t k = 0; k < bins[i]; k++)
                             cout << el;
 
                     }
                 }}}}
+
+    cin>>el;
     return 0;
 }
